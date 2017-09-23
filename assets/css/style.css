@@ -1,0 +1,19 @@
+body {
+	background-image: url("../images/background.jpg");
+	background-size: 100%;
+}
+#container {
+	margin: auto;
+	width: 900px;
+	height: 400px;
+	background-color: yellow;
+	padding: 30px;
+	margin-top: 40px;
+}
+h1, #time, #question, #answer1, #answer2, #answer3, #answer4 {
+	text-align: center;
+	margin-top: 30px;
+}
+#answer1, #answer2, #answer3, #answer4 {
+	font-size: 20px;
+}
