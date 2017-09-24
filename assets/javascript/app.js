@@ -2,7 +2,9 @@ var correct;
 var i = 0;
 var right = 0;
 var wrong = 0;
+var unanswered = 0
 var firstTime = true;
+var timeCount;
 
 function shuffle (array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -13,12 +15,31 @@ function shuffle (array) {
   };
 };
 
+var reset = function() {
+	$("#question").html("");
+	$("#answer1").html("");
+	$("#answer2").html("");
+	$("#answer3").html("");
+	$("#answer4").html("");
+};
+
 var timer = {
-	timeRemaining: 30,
+	timeRemaining: 21,
 	reset: function() {
 		timer.timeRemaining = 0
 	},
-}
+	count: function() {
+		timer.timeRemaining--;
+		$("#timeRemaining").text(timer.timeRemaining);
+		if (timer.timeRemaining == 0) {
+			reset();
+			$("#question").html("<h1>You took too long! Go back to school!</h1>");
+			var lose = setTimeout(nextQuestion, 1000*1);
+			unanswered++;
+			clearInterval(timeCount);
+		}
+	}
+};
 var nextGame = function() {
 	if (firstTime) {
 		$("#question").html("<button>Play!</button>");
@@ -30,24 +51,15 @@ var nextGame = function() {
 		$("#question").html("<button>Play Again!</button>");
 		$("#answer1").html("Correct Answers: " + right);
 		$("#answer2").html("Incorrect Answers: " + wrong);
-		$("#answer3").html("Unanswered Questions: ");
+		$("#answer3").html("Unanswered Questions: " + unanswered);
 		$("button").on("click", function(){
 			i = 0;
 			right = 0;
 			wrong = 0;
 			nextQuestion();
 		});
-	}
-}
-var reset = function() {
-	$("#question").html("");
-	$("#answer1").html("");
-	$("#answer2").html("");
-	$("#answer3").html("");
-	$("#answer4").html("");
-}
-
-$("#timeRemaining").html("<b>" + timer.timeRemaining + "<b>");
+	};
+};
 
 var queryURL = "https://opentdb.com/api.php?amount=15&category=12&difficulty=easy&type=multiple";
 
@@ -77,6 +89,9 @@ var nextQuestion = function() {
 		$("#answer2").html(answers[1]);
 		$("#answer3").html(answers[2]);
 		$("#answer4").html(answers[3]);
+		timer.timeRemaining = 21;
+		timeCount = setInterval(function() {
+			timer.count();}, 1000);
 	});
 };
 
@@ -88,14 +103,16 @@ $("#answers").on("click", "div", function(){
 		$("#question").html("<h1>Congrats! You're a genius!</h1>");
 		var win = setTimeout(nextQuestion, 1000*1);
 		right++;
+		clearInterval(timeCount);
 
 	} else {
 		reset();
 		$("#question").html("<h1>Wrong! Go back to school!</h1>");
 		var lose = setTimeout(nextQuestion, 1000*1);
 		wrong++;
-	}
-})
+		clearInterval(timeCount);
+	};
+});
 
 nextGame();
 
