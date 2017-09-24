@@ -16,7 +16,6 @@ h1, #time, #question, #answer1, #answer2, #answer3, #answer4 {
 }
 #answer1, #answer2, #answer3, #answer4 {
 	font-size: 20px;
-	background-color: white;
 	width: 400px;
 	margin: auto;
 	margin-top: 20px;

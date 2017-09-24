@@ -114,6 +114,27 @@ $("#answers").on("click", "div", function(){
 	};
 });
 
+$("#answer1").hover(function() {
+	$(this).css("background-color", "white");
+}, function() {
+	$(this).css("background-color", "yellow");
+});
+$("#answer2").hover(function() {
+	$(this).css("background-color", "white");
+}, function() {
+	$(this).css("background-color", "yellow");
+});
+$("#answer3").hover(function() {
+	$(this).css("background-color", "white");
+}, function() {
+	$(this).css("background-color", "yellow");
+});
+$("#answer4").hover(function() {
+	$(this).css("background-color", "white");
+}, function() {
+	$(this).css("background-color", "yellow");
+});
+
 nextGame();
 
 
