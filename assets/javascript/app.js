@@ -1,11 +1,17 @@
+var correct;
+var i = 0;
+var right = 0;
+var wrong = 0;
+var firstTime = true;
+
 function shuffle (array) {
   for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1))
-    var temp = array[i]
-    array[i] = array[j]
-    array[j] = temp
-  }
-}
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  };
+};
 
 var timer = {
 	timeRemaining: 30,
@@ -13,8 +19,28 @@ var timer = {
 		timer.timeRemaining = 0
 	},
 }
+var nextGame = function() {
+	if (firstTime) {
+		$("#question").html("<button>Play!</button>");
+		$("button").on("click", function(){
+			firstTime = false;
+			nextQuestion();
+		});
+	} else {
+		$("#question").html("<button>Play Again!</button>");
+		$("#answer1").html("Correct Answers: " + right);
+		$("#answer2").html("Incorrect Answers: " + wrong);
+		$("#answer3").html("Unanswered Questions: ");
+		$("button").on("click", function(){
+			i = 0;
+			right = 0;
+			wrong = 0;
+			nextQuestion();
+		});
+	}
+}
 var reset = function() {
-	$("#question").html("")
+	$("#question").html("");
 	$("#answer1").html("");
 	$("#answer2").html("");
 	$("#answer3").html("");
@@ -23,24 +49,23 @@ var reset = function() {
 
 $("#timeRemaining").html("<b>" + timer.timeRemaining + "<b>");
 
-var queryURL = "https://opentdb.com/api.php?amount=15&category=12&difficulty=medium&type=multiple";
-
-var correct;
-var i = 0;
+var queryURL = "https://opentdb.com/api.php?amount=15&category=12&difficulty=easy&type=multiple";
 
 var nextQuestion = function() {
 
 	reset();
 
+	if (i == 15) {
+		return nextGame();
+	};
+
 	$.ajax({
     	url: queryURL,
     	method: 'GET'
 	}).done(function(response) {
-		console.log("next");
-    	var question = response.results[i].question;
-    	$("#question").html(question);
-    	console.log(question);
-    	correct = response.results[0].correct_answer
+    	$("#question").html(response.results[i].question);
+    	correct = response.results[i].correct_answer;
+    	console.log(correct);
     	var answers = [];
     	answers.push(response.results[i].incorrect_answers[0]);
 		answers.push(response.results[i].incorrect_answers[1]);
@@ -56,21 +81,23 @@ var nextQuestion = function() {
 };
 
 $("#answers").on("click", "div", function(){
-	console.log(this);
+	console.log($(this).text());
 	i++;
-	if ($(this).text() === correct) {
+	if ($(this).text() == correct) {
 		reset();
 		$("#question").html("<h1>Congrats! You're a genius!</h1>");
-		var win = setTimeout(nextQuestion, 1000*4);
+		var win = setTimeout(nextQuestion, 1000*1);
+		right++;
 
 	} else {
 		reset();
 		$("#question").html("<h1>Wrong! Go back to school!</h1>");
-		var lose = setTimeout(nextQuestion, 1000*4);
+		var lose = setTimeout(nextQuestion, 1000*1);
+		wrong++;
 	}
 })
 
-nextQuestion();
+nextGame();
 
 
 
