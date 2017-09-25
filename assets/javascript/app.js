@@ -120,6 +120,19 @@ var nextQuestion = function() {
 		timer.count();}, 1000);
 	};
 };
+
+var gifAPI = function() {
+    var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&q=" + correct;
+
+    $.ajax({
+      url: queryURL,
+      method: 'GET'
+    }).done(function(response) {
+      var result = response.data[Math.floor(Math.random()*20)].images.fixed_height.url;
+      console.log(result);
+      $("#answer2").html("<img src='" + result + "'>");
+    });
+};
 // click feature for picking an answer
 $("#answers").on("click", "div", function(){
 	clearInterval(timeCount);
@@ -129,14 +142,16 @@ $("#answers").on("click", "div", function(){
 	if ($(this).text() == correct) {
 		reset();
 		$("#question").html("<h1>Congrats! You're a genius!</h1>");
-		var win = setTimeout(nextQuestion, 1000*1);
+		gifAPI();
+		var win = setTimeout(nextQuestion, 1000*4);
 		right++;
 	// if user was wrong, display and go to next question
 	} else {
 		reset();
 		$("#question").html("<h1>Wrong! Go back to school!</h1>");
-		$("#answer2").html("<h3>The correct answer was: " + correct);
-		var lose = setTimeout(nextQuestion, 1000*1);
+		$("#answer1").html("<h3>The correct answer was: " + correct);
+		gifAPI();
+		var lose = setTimeout(nextQuestion, 1000*4);
 		wrong++;
 	};
 });
