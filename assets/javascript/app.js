@@ -30,6 +30,7 @@ var reset = function() {
 	$("#answer1").html("");
 	$("#gif").html("");
 	$("#answer2").html("");
+	$("#unanswered").html("");
 	$("#answer3").html("");
 	$("#answer4").html("");
 };
@@ -43,7 +44,7 @@ var timer = {
 		if (timer.timeRemaining == 0) {
 			reset();
 			$("#question").html("<h1>You took too long! Go back to school!</h1>");
-			$("#answer2").html("<h3>The correct answer was: " + correct);
+			$("#correct").html("<h3>The correct answer was: " + correct);
 			var lose = setTimeout(nextQuestion, 1000*1);
 			unanswered++;
 			clearInterval(timeCount);
@@ -70,9 +71,9 @@ var nextGame = function() {
 	// if already played, shows past stats
 	} else {
 		$("#question").html("<button>Play Again!</button>");
-		$("#answer1").html("Correct Answers: " + right);
-		$("#answer2").html("Incorrect Answers: " + wrong);
-		$("#answer3").html("Unanswered Questions: " + unanswered);
+		$("#correct").html("Correct Answers: " + right);
+		$("#gif").html("Incorrect Answers: " + wrong);
+		$("#unanswered").html("Unanswered Questions: " + unanswered);
 		// button click resets important variables and grabs new questions
 		$("button").on("click", function(){
 			i = 0;

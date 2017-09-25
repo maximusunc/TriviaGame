@@ -10,11 +10,11 @@ body {
 	padding: 30px;
 	margin-top: 40px;
 }
-h1, #time, #question, #answer1, #answer2, #answer3, #answer4, #correct, #gif {
+h1, #time, #question, #answer1, #answer2, #answer3, #answer4, #correct, #gif, #unanswered {
 	text-align: center;
 	margin-top: 30px;
 }
-#answer1, #answer2, #answer3, #answer4, #correct, #gif {
+#answer1, #answer2, #answer3, #answer4, #correct, #gif, #unanswered {
 	font-size: 20px;
 	width: 400px;
 	margin: auto;
