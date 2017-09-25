@@ -26,4 +26,5 @@ h1, #time, #question, #answer1, #answer2, #answer3, #answer4, #correct, #gif, #u
 }
 button {
 	font-size: 30px;
+	width: 250px;
 }
