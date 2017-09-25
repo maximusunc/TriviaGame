@@ -18,7 +18,8 @@ h1, #time, #question, #answer1, #answer2, #answer3, #answer4 {
 	font-size: 20px;
 	width: 400px;
 	margin: auto;
-	margin-top: 20px;
+	margin-top: 10px;
+	border-radius: 10px;
 }
 #question {
 	font-size: 25px;
