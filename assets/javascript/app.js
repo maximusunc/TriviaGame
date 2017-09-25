@@ -57,13 +57,14 @@ var nextGame = function() {
 	}).done(function(response) {
 		apiResponse = response;
 	});
-
+	// checks if first time playing the game
 	if (firstTime) {
 		$("#question").html("<button>Play!</button>");
 		$("button").on("click", function(){
 			firstTime = false;
 			nextQuestion();
 		});
+	// if already played, shows past stats
 	} else {
 		$("#question").html("<button>Play Again!</button>");
 		$("#answer1").html("Correct Answers: " + right);
@@ -121,45 +122,49 @@ var nextQuestion = function() {
 };
 // click feature for picking an answer
 $("#answers").on("click", "div", function(){
+	var clickedDiv = this;
+	clearInterval(timeCount);
 	console.log($(this).text());
-	// check if user guessed the right answer, and goes to the next question
-	if ($(this).text() == correct) {
-		reset();
-		$("#question").html("<h1>Congrats! You're a genius!</h1>");
-		var win = setTimeout(nextQuestion, 1000*1);
-		right++;
-		clearInterval(timeCount);
-	// if user was wrong, display and go to next question
-	} else {
-		reset();
-		$("#question").html("<h1>Wrong! Go back to school!</h1>");
-		$("#answer2").html("<h3>The correct answer was: " + correct);
-		var lose = setTimeout(nextQuestion, 1000*1);
-		wrong++;
-		clearInterval(timeCount);
-	};
+	var highlight = $(this).css("background-color", "white");
+	var wait = setTimeout(function() {
+		var highlight = $(clickedDiv).css("background-color", "yellow");
+		// check if user guessed the right answer, and goes to the next question
+		if ($(clickedDiv).text() == correct) {
+			reset();
+			$("#question").html("<h1>Congrats! You're a genius!</h1>");
+			var win = setTimeout(nextQuestion, 1000*1);
+			right++;
+		// if user was wrong, display and go to next question
+		} else {
+			reset();
+			$("#question").html("<h1>Wrong! Go back to school!</h1>");
+			$("#answer2").html("<h3>The correct answer was: " + correct);
+			var lose = setTimeout(nextQuestion, 1000*1);
+			wrong++;
+		};
+	}, 1000);
 });
 // very verbose hover feature to highlight the answer user mouses over
-$("#answer1").hover(function() {
-	$(this).css("background-color", "white");
-}, function() {
-	$(this).css("background-color", "yellow");
-});
-$("#answer2").hover(function() {
-	$(this).css("background-color", "white");
-}, function() {
-	$(this).css("background-color", "yellow");
-});
-$("#answer3").hover(function() {
-	$(this).css("background-color", "white");
-}, function() {
-	$(this).css("background-color", "yellow");
-});
-$("#answer4").hover(function() {
-	$(this).css("background-color", "white");
-}, function() {
-	$(this).css("background-color", "yellow");
-});
+// $("#answer1").hover(function() {
+// 	$(this).css("background-color", "white");
+// }, function() {
+// 	$(this).css("background-color", "yellow");
+// });
+// $("#answer2").hover(function() {
+// 	$(this).css("background-color", "white");
+// }, function() {
+// 	$(this).css("background-color", "yellow");
+// });
+// $("#answer3").hover(function() {
+// 	$(this).css("background-color", "white");
+// }, function() {
+// 	$(this).css("background-color", "yellow");
+// });
+// $("#answer4").hover(function() {
+// 	$(this).css("background-color", "white");
+// }, function() {
+// 	$(this).css("background-color", "yellow");
+// });
 
 // After everything is identified, start the game
 nextGame();
