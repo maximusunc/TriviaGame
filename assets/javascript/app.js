@@ -133,7 +133,7 @@ var gifAPI = function() {
       url: queryURL,
       method: 'GET'
     }).done(function(response) {
-      var result = response.data[Math.floor(Math.random()*20)].images.fixed_height.url;
+      var result = response.data[Math.floor(Math.random()*5)].images.fixed_height.url;
       console.log(result);
       $("#gif").html("<img src='" + result + "'>").css("background-color", "yellow");
     });
