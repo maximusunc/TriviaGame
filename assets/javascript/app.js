@@ -6,12 +6,13 @@ var wrong = 0;
 var unanswered = 0
 var firstTime = true;
 var timeCount;
-var queryURL = "https://opentdb.com/api.php?amount=15&category=12&difficulty=easy&type=multiple";
 var question;
 var answer1;
 var answer2;
 var answer3;
 var answer4;
+var apiResponse;
+
 // shuffle function for answers array
 function shuffle (array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -35,10 +36,28 @@ var timer = {
 	count: function() {
 		timer.timeRemaining--;
 		$("#timeRemaining").text(timer.timeRemaining);
+		// Once the time runs out, say so and get the next question
+		if (timer.timeRemaining == 0) {
+			reset();
+			$("#question").html("<h1>You took too long! Go back to school!</h1>");
+			$("#answer2").html("<h3>The correct answer was: " + correct);
+			var lose = setTimeout(nextQuestion, 1000*1);
+			unanswered++;
+			clearInterval(timeCount);
+		};
 	}
 };
 // function to start the game, different display for very first playthrough and every subsequent playthrough
 var nextGame = function() {
+	// API to fetch questions from opentdb
+	var queryURL = "https://opentdb.com/api.php?amount=15&category=12&difficulty=easy&type=multiple";
+	$.ajax({
+    	url: queryURL,
+    	method: 'GET'
+	}).done(function(response) {
+		apiResponse = response;
+	});
+
 	if (firstTime) {
 		$("#question").html("<button>Play!</button>");
 		$("button").on("click", function(){
@@ -59,18 +78,14 @@ var nextGame = function() {
 		});
 	};
 };
-// API to fetch questions from opentdb, then stores questions/answers in variables
+// stores questions/answers from API in variables
 var generateNewSet = function() {
-	$.ajax({
-    	url: queryURL,
-    	method: 'GET'
-	}).done(function(response) {
 		console.log(i);
-   		question = response.results[i].question;
-   		answer1 = response.results[i].incorrect_answers[0];
-   		answer2 = response.results[i].incorrect_answers[1];
-   		answer3 = response.results[i].incorrect_answers[2];
-   		correct = response.results[i].correct_answer;
+   		question = apiResponse.results[i].question;
+   		answer1 = apiResponse.results[i].incorrect_answers[0];
+   		answer2 = apiResponse.results[i].incorrect_answers[1];
+   		answer3 = apiResponse.results[i].incorrect_answers[2];
+   		correct = apiResponse.results[i].correct_answer;
    		// method of putting answers in an array and shuffling them to randomize
    		var answers = [];
    		answers.push(answer1);
@@ -87,7 +102,6 @@ var generateNewSet = function() {
 		$("#answer4").html("<p>" + answers[3] + "</p>");
 		// increases i to grab the next set of question/answers
 		i++;
-	});
 };
 
 var nextQuestion = function() {
@@ -103,28 +117,19 @@ var nextQuestion = function() {
 		timer.timeRemaining = 21;
 		timeCount = setInterval(function() {
 		timer.count();}, 1000);
-		// Once the time runs out, say so and get the next question
-		if (timer.timeRemaining == 0) {
-			reset();
-			$("#question").html("<h1>You took too long! Go back to school!</h1>");
-			$("#answer2").html("<h3>The correct answer was: " + correct);
-			var lose = setTimeout(nextQuestion, 1000*1);
-			unanswered++;
-			clearInterval(timeCount);
-		};
 	};
 };
 // click feature for picking an answer
 $("#answers").on("click", "div", function(){
 	console.log($(this).text());
-	// check if user guessed the right answer, and goes to the next
+	// check if user guessed the right answer, and goes to the next question
 	if ($(this).text() == correct) {
 		reset();
 		$("#question").html("<h1>Congrats! You're a genius!</h1>");
 		var win = setTimeout(nextQuestion, 1000*1);
 		right++;
 		clearInterval(timeCount);
-	// if user was wrong, display and go to next
+	// if user was wrong, display and go to next question
 	} else {
 		reset();
 		$("#question").html("<h1>Wrong! Go back to school!</h1>");
@@ -155,6 +160,7 @@ $("#answer4").hover(function() {
 }, function() {
 	$(this).css("background-color", "yellow");
 });
+
 // After everything is identified, start the game
 nextGame();
 
