@@ -12,6 +12,7 @@ var answer2;
 var answer3;
 var answer4;
 var apiResponse;
+var background = true;
 
 // shuffle function for answers array
 function shuffle (array) {
@@ -25,7 +26,9 @@ function shuffle (array) {
 // reset function to clear the display after each question
 var reset = function() {
 	$("#question").html("");
+	$("#correct").html("");
 	$("#answer1").html("");
+	$("#gif").html("");
 	$("#answer2").html("");
 	$("#answer3").html("");
 	$("#answer4").html("");
@@ -103,6 +106,7 @@ var generateNewSet = function() {
 		$("#answer4").html("<p>" + answers[3] + "</p>");
 		// increases i to grab the next set of question/answers
 		i++;
+		background = true;
 };
 
 var nextQuestion = function() {
@@ -130,7 +134,7 @@ var gifAPI = function() {
     }).done(function(response) {
       var result = response.data[Math.floor(Math.random()*20)].images.fixed_height.url;
       console.log(result);
-      $("#answer2").html("<img src='" + result + "'>");
+      $("#gif").html("<img src='" + result + "'>").css("background-color", "yellow");
     });
 };
 // click feature for picking an answer
@@ -141,6 +145,7 @@ $("#answers").on("click", "div", function(){
 	// check if user guessed the right answer, and goes to the next question
 	if ($(this).text() == correct) {
 		reset();
+		background = false;
 		$("#question").html("<h1>Congrats! You're a genius!</h1>");
 		gifAPI();
 		var win = setTimeout(nextQuestion, 1000*4);
@@ -148,34 +153,37 @@ $("#answers").on("click", "div", function(){
 	// if user was wrong, display and go to next question
 	} else {
 		reset();
+		background = false;
 		$("#question").html("<h1>Wrong! Go back to school!</h1>");
-		$("#answer1").html("<h3>The correct answer was: " + correct);
+		$("#correct").html("<h3>The correct answer was: " + correct).css("background-color", "yellow");
 		gifAPI();
 		var lose = setTimeout(nextQuestion, 1000*4);
 		wrong++;
 	};
 });
 // very verbose hover feature to highlight the answer user mouses over
-$("#answer1").hover(function() {
-	$(this).css({"background-color": "pink"});
-}, function() {
-	$(this).css({"background-color": "yellow", "border": "none"});
-});
-$("#answer2").hover(function() {
-	$(this).css({"background-color": "pink"});
-}, function() {
-	$(this).css({"background-color": "yellow", "border": "none"});
-});
-$("#answer3").hover(function() {
-	$(this).css({"background-color": "pink"});
-}, function() {
-	$(this).css({"background-color": "yellow", "border": "none"});
-});
-$("#answer4").hover(function() {
-	$(this).css({"background-color": "pink"});
-}, function() {
-	$(this).css({"background-color": "yellow", "border": "none"});
-});
+if (background) {
+	$("#answer1").hover(function() {
+		$(this).css({"background-color": "pink"});
+	}, function() {
+		$(this).css({"background-color": "yellow", "border": "none"});
+	});
+	$("#answer2").hover(function() {
+		$(this).css({"background-color": "pink"});
+	}, function() {
+		$(this).css({"background-color": "yellow", "border": "none"});
+	});
+	$("#answer3").hover(function() {
+		$(this).css({"background-color": "pink"});
+	}, function() {
+		$(this).css({"background-color": "yellow", "border": "none"});
+	});
+	$("#answer4").hover(function() {
+		$(this).css({"background-color": "pink"});
+	}, function() {
+		$(this).css({"background-color": "yellow", "border": "none"});
+	});
+};
 
 // After everything is identified, start the game
 nextGame();
