@@ -12,7 +12,6 @@ var answer2;
 var answer3;
 var answer4;
 var apiResponse;
-var background = true;
 
 // shuffle function for answers array
 function shuffle (array) {
@@ -107,7 +106,6 @@ var generateNewSet = function() {
 		$("#answer4").html("<p>" + answers[3] + "</p>");
 		// increases i to grab the next set of question/answers
 		i++;
-		background = true;
 };
 
 var nextQuestion = function() {
@@ -146,7 +144,6 @@ $("#answers").on("click", "div", function(){
 	// check if user guessed the right answer, and goes to the next question
 	if ($(this).text() == correct) {
 		reset();
-		background = false;
 		$("#question").html("<h1>Congrats! You're a genius!</h1>");
 		gifAPI();
 		var win = setTimeout(nextQuestion, 1000*4);
@@ -154,7 +151,6 @@ $("#answers").on("click", "div", function(){
 	// if user was wrong, display and go to next question
 	} else {
 		reset();
-		background = false;
 		$("#question").html("<h1>Wrong! Go back to school!</h1>");
 		$("#correct").html("<h3>The correct answer was: " + correct).css("background-color", "yellow");
 		gifAPI();
@@ -163,51 +159,26 @@ $("#answers").on("click", "div", function(){
 	};
 });
 // very verbose hover feature to highlight the answer user mouses over
-if (background) {
-	$("#answer1").hover(function() {
-		$(this).css({"background-color": "pink"});
-	}, function() {
-		$(this).css({"background-color": "yellow", "border": "none"});
-	});
-	$("#answer2").hover(function() {
-		$(this).css({"background-color": "pink"});
-	}, function() {
-		$(this).css({"background-color": "yellow", "border": "none"});
-	});
-	$("#answer3").hover(function() {
-		$(this).css({"background-color": "pink"});
-	}, function() {
-		$(this).css({"background-color": "yellow", "border": "none"});
-	});
-	$("#answer4").hover(function() {
-		$(this).css({"background-color": "pink"});
-	}, function() {
-		$(this).css({"background-color": "yellow", "border": "none"});
-	});
-};
+$("#answer1").hover(function() {
+	$(this).css({"background-color": "pink"});
+}, function() {
+	$(this).css({"background-color": "yellow", "border": "none"});
+});
+$("#answer2").hover(function() {
+	$(this).css({"background-color": "pink"});
+}, function() {
+	$(this).css({"background-color": "yellow", "border": "none"});
+});
+$("#answer3").hover(function() {
+	$(this).css({"background-color": "pink"});
+}, function() {
+	$(this).css({"background-color": "yellow", "border": "none"});
+});
+$("#answer4").hover(function() {
+	$(this).css({"background-color": "pink"});
+}, function() {
+	$(this).css({"background-color": "yellow", "border": "none"});
+});
 
 // After everything is identified, start the game
 nextGame();
-
-
-
-// var questions = {
-// 	"Sfumato is a technique in what? ": 
-// 	["Painting", "Cooking", "Martial Arts", "Meditation"], 
-// 	Painting
-// 	"Melanophobia is the irrational fear of what? ": 
-// 	["The colour black", "Punishment", "Fruit", "Children"],
-// 	The colour black
-// 	"Which nation's flag features a gold lion holding a kastane sword with its right forepaw? ": 
-// 	["Bangladesh", "Nepal", "Bhutan", "Sri Lanka"],
-// 	Sri Lanka
-// 	"The disorder of 'rickets' is most often caused by a deficiency of which vitamin? ": 
-// 	["Vitamin B", "Vitamin E", "Vitamin C", "Vitamin D"],
-// 	"The Bridal Chorus, generally known today as 'Here Comes the Bride', is from the 1850 opera 'Lohengrin'. Who composed the march? ": 
-// 	["Ludwig van Beethoven", "Richard Wagner", "Johannes Brahms", "Maurice Ravel"],
-// 	Richard Wagner
-// 	"Which of the following James Bond films was the first to be released? ": 
-// 	["Goldfinger", "Thunderball", "You Only Live Twice", "From Russia With Love"],
-
-// }
-
